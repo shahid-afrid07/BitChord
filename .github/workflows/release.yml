@@ -203,9 +203,10 @@ jobs:
           ./gradlew :desktopApp:packageDmg :desktopApp:packagePkg :desktopApp:createDistributable \
             -Pbitchord.version=${{ steps.version.outputs.value }}
 
-      - name: The analyser and models are in the jar
+      - name: The native libraries and models are in the jar
         run: |
           jar=$(ls desktopApp/build/compose/binaries/main/app/BitChord.app/Contents/app/desktopApp*.jar)
+          jar tf "$jar" | grep -q 'native/libbitchord_nowplaying.dylib'
           jar tf "$jar" | grep -q 'models/.*\.onnx'
 
       - name: Collect
